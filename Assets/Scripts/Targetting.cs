@@ -46,7 +46,7 @@ public class Targetting: MonoBehaviour
 		{
 			rayCasted = hitInfo.transform.CompareTag("Target");
 		}
-		// rayCasted est true si un objet possédant le tag draggable est détécté
+		// rayCasted est true si un objet possédant le tag target est détécté
 
 		if (Input.GetMouseButtonDown (0))	// L'utilisateur vient de cliquer
 		{
@@ -135,7 +135,7 @@ public class Targetting: MonoBehaviour
 		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, transitionTime);
 		GetComponentInChildren<MotionBlur> ().blurAmount = Mathf.Lerp (GetComponentInChildren<MotionBlur> ().blurAmount, parameters.motionBlurStrength, transitionTime);
 //		Debug.Log(Vector3.Lerp(transform.position,targettedObject.transform.position, transitionTime*Time.deltaTime));
-		transform.position = Vector3.Lerp (transform.position, targettedObject.transform.position, transitionTime);
+		transform.position = Vector3.Lerp (transform.position, parameters.anchor.position, transitionTime);
 
 //		GetComponent<Transform> ().position = Vector3.Lerp(targettedObject.transform.position,lastTargettedObject.transform.position, transitionTime);
 		if (GetComponent<Transform> ().position == targettedObject.transform.position) {

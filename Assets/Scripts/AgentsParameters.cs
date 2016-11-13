@@ -7,6 +7,7 @@ public class AgentsParameters : MonoBehaviour {
 	public bool isFlying = true;
 	public bool isMoving = false;
 
+	public Transform anchor;
 	public float scaleFactor = 1;
 
 	//Movement
