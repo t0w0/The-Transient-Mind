@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.ImageEffects
-{
+
     [ExecuteInEditMode]
     [RequireComponent (typeof(Camera))]
     [AddComponentMenu ("Image Effects/Camera/Depth of Field (Lens Blur, Scatter, DX11)") ]
@@ -384,4 +383,3 @@ namespace UnityStandardAssets.ImageEffects
             if (rtLow2) RenderTexture.ReleaseTemporary(rtLow2);
         }
     }
-}
