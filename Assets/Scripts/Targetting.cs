@@ -14,7 +14,7 @@ public class Targetting: MonoBehaviour
 
 	public GameObject beginTarget;
 
-	private GameObject lastTargettedObject;
+	public GameObject lastTargettedObject;
 	public GameObject targettedObject;	// Objet visé, null si aucun objet visé
 
 	public int RAYCASTLENGTH = 10;	// Longueur du rayon issu de la caméra
@@ -23,13 +23,20 @@ public class Targetting: MonoBehaviour
 	public Vector2 hotSpot = new Vector2(16, 16);	// Offset du centre du curseur
 	public Texture2D cursorOff, cursorSelected, cursorHover;	// Textures à appliquer aux curseurs
 
+	public float transitionTime = 10.0f;
 	public bool transiting = false;
 
 	void Start () 
 	{	
-		lastTargettedObject = beginTarget.transform.parent.gameObject;
-		targettedObject = beginTarget.transform.parent.gameObject;
+		lastTargettedObject = beginTarget;
+		targettedObject = beginTarget;
+
+		transitionTime = transitionTime * Time.deltaTime;
 		Transition (targettedObject);
+		while (!transiting) {
+			TransitionAnimation ();
+		}
+
 		Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 		Cursor.visible = true;
 	}
@@ -48,28 +55,20 @@ public class Targetting: MonoBehaviour
 		}
 		// rayCasted est true si un objet possédant le tag draggable est détécté
 
-		if (Input.GetMouseButtonDown (0))	// L'utilisateur vient de cliquer
-		{
-			if (rayCasted) 
-			{
-				Debug.Log ("Object selected");
-				Cursor.SetCursor (cursorSelected, hotSpot, cursorMode);
-			}
-		} 
-
-		else if (Input.GetMouseButtonUp (0)) 	// L'utilisateur relache un objet visé
+		if (Input.GetMouseButtonDown (0)) 	// L'utilisateur click
 		{
 			
 			if (rayCasted) 
 			{
-				Cursor.SetCursor (cursorHover, hotSpot, cursorMode);
+				Cursor.SetCursor (cursorSelected, hotSpot, cursorMode);
 
 				lastTargettedObject = targettedObject;
-				transiting = true;
-				targettedObject.GetComponentInChildren<Collider> ().isTrigger = false;
-				//targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = false;
+				lastTargettedObject.GetComponentInChildren<Renderer> ().enabled = false;
+				lastTargettedObject.GetComponentInChildren<Collider> ().isTrigger = false;
+
 				targettedObject = hitInfo.transform.parent.gameObject;
 
+				transiting = true;
 				Transition (targettedObject);
 
 				Debug.Log ("Object targetted");
@@ -105,15 +104,15 @@ public class Targetting: MonoBehaviour
 
 	void Transition (GameObject target) {
 
-		//targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
+//		targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
 		targettedObject.GetComponentInChildren<Collider> ().isTrigger = true;
 
 //		GetComponent<Transform> ().position = targettedObject.transform.position;
 	
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
-		GetComponentInChildren<Rigidbody> ().useGravity = parameters.isFlying ? false : true ;
-		GetComponentInChildren<Rigidbody> ().constraints = parameters.isMoving ? RigidbodyConstraints.None : RigidbodyConstraints.FreezePosition;
+//		GetComponent<Rigidbody> ().useGravity = parameters.isFlying ? false : true ;
+//		GetComponent<Rigidbody> ().constraints = parameters.isMoving ? RigidbodyConstraints.None : RigidbodyConstraints.FreezePosition;
 
 //		RenderSettings.fogDensity = parameters.visionRange;
 //		GetComponentInChildren<Camera> ().fieldOfView = parameters.fov;
@@ -126,7 +125,6 @@ public class Targetting: MonoBehaviour
 
 	void TransitionAnimation () {
 		Debug.Log ("Transition");
-		float transitionTime = 1.0f;
 
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
@@ -139,6 +137,8 @@ public class Targetting: MonoBehaviour
 
 //		GetComponent<Transform> ().position = Vector3.Lerp(targettedObject.transform.position,lastTargettedObject.transform.position, transitionTime);
 		if (GetComponent<Transform> ().position == targettedObject.transform.position) {
+			targettedObject.GetComponentInChildren<Renderer> ().enabled = false;
+			Debug.Log ("Boo");
 			transiting = false;
 		}
 	}
