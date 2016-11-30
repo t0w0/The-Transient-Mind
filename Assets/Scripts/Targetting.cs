@@ -15,7 +15,7 @@ public class Targetting: MonoBehaviour
 	public GameObject beginTarget;
 
 	private GameObject lastTargettedObject;
-	private GameObject targettedObject;	// Objet visé, null si aucun objet visé
+	public GameObject targettedObject;	// Objet visé, null si aucun objet visé
 
 	public int RAYCASTLENGTH = 10;	// Longueur du rayon issu de la caméra
 
@@ -27,8 +27,8 @@ public class Targetting: MonoBehaviour
 
 	void Start () 
 	{	
-		lastTargettedObject = beginTarget;
-		targettedObject = beginTarget;
+		lastTargettedObject = beginTarget.transform.parent.gameObject;
+		targettedObject = beginTarget.transform.parent.gameObject;
 		Transition (targettedObject);
 		Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 		Cursor.visible = true;
@@ -66,9 +66,9 @@ public class Targetting: MonoBehaviour
 
 				lastTargettedObject = targettedObject;
 				transiting = true;
-				targettedObject.GetComponent<Collider> ().isTrigger = false;
-				targettedObject.GetComponent<Rigidbody> ().isKinematic = false;
-				targettedObject = hitInfo.transform.gameObject;
+				targettedObject.GetComponentInChildren<Collider> ().isTrigger = false;
+				//targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = false;
+				targettedObject = hitInfo.transform.parent.gameObject;
 
 				Transition (targettedObject);
 
@@ -91,12 +91,13 @@ public class Targetting: MonoBehaviour
 				Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 			}
 		}
+		if (targettedObject.GetComponent<AgentsParameters> ().isMoving) {
+			GetComponent<Transform> ().position = targettedObject.GetComponent<AgentsParameters> ().anchor.position;
+		}
 	}
 
 	void LateUpdate () {
-		if (targettedObject.GetComponent<AgentsParameters> ().isMoving) {
-			//GetComponent<Transform> ().position = targettedObject.transform.position;
-		}
+		
 		if (transiting) {
 			TransitionAnimation ();
 		}
@@ -104,15 +105,15 @@ public class Targetting: MonoBehaviour
 
 	void Transition (GameObject target) {
 
-		targettedObject.GetComponent<Rigidbody> ().isKinematic = true;
-		targettedObject.GetComponent<Collider> ().isTrigger = true;
+		//targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
+		targettedObject.GetComponentInChildren<Collider> ().isTrigger = true;
 
 //		GetComponent<Transform> ().position = targettedObject.transform.position;
 	
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
-		GetComponent<Rigidbody> ().useGravity = parameters.isFlying ? false : true ;
-		GetComponent<Rigidbody> ().constraints = parameters.isMoving ? RigidbodyConstraints.None : RigidbodyConstraints.FreezePosition;
+		GetComponentInChildren<Rigidbody> ().useGravity = parameters.isFlying ? false : true ;
+		GetComponentInChildren<Rigidbody> ().constraints = parameters.isMoving ? RigidbodyConstraints.None : RigidbodyConstraints.FreezePosition;
 
 //		RenderSettings.fogDensity = parameters.visionRange;
 //		GetComponentInChildren<Camera> ().fieldOfView = parameters.fov;
@@ -125,9 +126,8 @@ public class Targetting: MonoBehaviour
 
 	void TransitionAnimation () {
 		Debug.Log ("Transition");
-		float transitionTime = 0.25f;
+		float transitionTime = 1.0f;
 
-		AgentsParameters lastParameters = lastTargettedObject.GetComponent<AgentsParameters> ();
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
 		RenderSettings.fogDensity = Mathf.Lerp (RenderSettings.fogDensity, parameters.visionRange, transitionTime);
@@ -135,7 +135,7 @@ public class Targetting: MonoBehaviour
 		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, transitionTime);
 		GetComponentInChildren<MotionBlur> ().blurAmount = Mathf.Lerp (GetComponentInChildren<MotionBlur> ().blurAmount, parameters.motionBlurStrength, transitionTime);
 //		Debug.Log(Vector3.Lerp(transform.position,targettedObject.transform.position, transitionTime*Time.deltaTime));
-		transform.position = Vector3.Lerp (transform.position, targettedObject.transform.position, transitionTime);
+		transform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
 
 //		GetComponent<Transform> ().position = Vector3.Lerp(targettedObject.transform.position,lastTargettedObject.transform.position, transitionTime);
 		if (GetComponent<Transform> ().position == targettedObject.transform.position) {
