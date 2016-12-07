@@ -176,5 +176,4 @@ using UnityEngine;
                 RenderTexture.ReleaseTemporary (renderTarget2Use);
             }
         }
-    
 }

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-
     [ExecuteInEditMode]
     [RequireComponent (typeof(Camera))]
     [AddComponentMenu ("Image Effects/Camera/Depth of Field (Lens Blur, Scatter, DX11)") ]
@@ -383,3 +382,4 @@ using UnityEngine;
             if (rtLow2) RenderTexture.ReleaseTemporary(rtLow2);
         }
     }
+

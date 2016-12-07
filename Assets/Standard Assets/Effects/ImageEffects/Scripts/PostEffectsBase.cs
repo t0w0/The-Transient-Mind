@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
     [ExecuteInEditMode]
     [RequireComponent (typeof(Camera))]
     public class PostEffectsBase : MonoBehaviour
@@ -256,5 +255,4 @@ using UnityEngine;
 
             GL.PopMatrix();
         }
-    
 }
