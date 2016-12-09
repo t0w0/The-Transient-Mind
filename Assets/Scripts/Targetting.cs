@@ -37,7 +37,7 @@ public class Targetting: MonoBehaviour
 		lastTargettedObject = beginTarget.gameObject;
 		targettedObject = beginTarget.gameObject;
 
-		//Transition (targettedObject);
+		Transition (targettedObject);
 
 		Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 		Cursor.visible = true;
@@ -106,10 +106,11 @@ public class Targetting: MonoBehaviour
 	void LateUpdate () {
 		
 		if (transiting) {
+			TransitionAnimation ();
 			if (transitionValidate) {
-				TransitionAnimation ();
+				//TransitionAnimation ();
 			} else {
-				TransitionValidationAnimation ();
+				//TransitionValidationAnimation ();
 			}
 		}
 	}
@@ -119,13 +120,13 @@ public class Targetting: MonoBehaviour
 		lastTargettedObject = targettedObject;
 		targettedObject = target;
 
-		//lastTargettedObject.GetComponentInChildren<Renderer> ().enabled = true;
+		lastTargettedObject.GetComponentInChildren<Renderer> ().enabled = true;
 		lastTargettedObject.GetComponentInChildren<Collider> ().isTrigger = false;
 		lastTargettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
 
 		transiting = true;
 
-		//targettedObject.GetComponentInChildren<Renderer> ().enabled = false;
+		targettedObject.GetComponentInChildren<Renderer> ().enabled = false;
 		targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
 		targettedObject.GetComponentInChildren<Collider> ().isTrigger = true;
 	
@@ -136,7 +137,7 @@ public class Targetting: MonoBehaviour
 
 	}
 
-	void TransitionValidationAnimation () {
+	/*void TransitionValidationAnimation () {
 		Debug.Log ("TransitionValidation");
 
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
@@ -156,7 +157,7 @@ public class Targetting: MonoBehaviour
 			transiting = false;
 			transitionValidate = false;
 		}
-	}
+	}*/
 
 	void TransitionAnimation () {
 		Debug.Log ("Transition");
@@ -164,7 +165,7 @@ public class Targetting: MonoBehaviour
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
 		RAYCASTLENGTH = parameters.interactionRange;
-//		RenderSettings.fogDensity = Mathf.Lerp (RenderSettings.fogDensity, parameters.visionRange, transitionTime);
+
 		GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, transitionTime);
 		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, transitionTime);
 		GetComponentInChildren<MotionBlur> ().blurAmount = Mathf.Lerp (GetComponentInChildren<MotionBlur> ().blurAmount, parameters.motionBlurStrength, transitionTime);
@@ -172,7 +173,6 @@ public class Targetting: MonoBehaviour
 		GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, transitionTime);
 
 		transform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
-//		transform.rotation.SetEulerAngles (Vector3.Lerp (transform.rotation.eulerAngles, targettedObject.GetComponent<AgentsParameters> ().anchor.rotation.eulerAngles, transitionTime));
 
 		if (GetComponent<Transform> ().position == targettedObject.transform.position) {
 			transiting = false;
