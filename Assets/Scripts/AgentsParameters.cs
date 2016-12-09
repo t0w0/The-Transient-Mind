@@ -11,7 +11,21 @@ public class AgentsParameters : MonoBehaviour {
 
 	public float scaleFactor = 1;
 
-	//Movement
+	//Head Movement
+	[Range(0, 10)]
+	public float turnSpeed = 0;
+
+	[Range(0, 180)]
+	public float verticalAngleMax = 75;
+
+	[Range(0, 180)]
+	public float verticalAngleMin = 45;
+
+	[Range(0, 180)]
+	public float horizontalAngleMax = 90;
+
+	[Range(0, 180)]
+	public float horizontalAngleMin = 90;
 
 
 	//Vision
