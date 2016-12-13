@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 1ed6c526877f54b279aaf96c100da040
-timeCreated: 1480503636
+guid: 7168f61ff4acc45ca807ab1e04abe455
+timeCreated: 1480503885
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -129,83 +129,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: C4D Animation Take
-      takeName: C4D Animation Take
-      firstFrame: 0
-      lastFrame: 300
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Ground
-        weight: 1
-      - path: Moulin
-        weight: 1
-      - path: Moulin/fondation
-        weight: 1
-      - path: Moulin/poignet
-        weight: 1
-      - path: Moulin/Roue
-        weight: 1
-      - path: Moulin/Roue/block
-        weight: 1
-      - path: Moulin/Roue/contourmoulin
-        weight: 1
-      - path: Moulin/Roue/rayon1
-        weight: 1
-      - path: Moulin/Roue/rayon2
-        weight: 1
-      - path: Moulin/Roue/rayon2_2
-        weight: 1
-      - path: Moulin/Roue/rotor
-        weight: 1
-      - path: Neutre
-        weight: 1
-      - path: Neutre/TUBE
-        weight: 1
-      - path: Neutre/TUBE/Capsule
-        weight: 1
-      - path: Neutre/TUBE/Capsule/Capsule_2
-        weight: 1
-      - path: Nuage1
-        weight: 1
-      - path: Nuage2
-        weight: 1
-      - path: Nuage3
-        weight: 1
-      - path: Rock
-        weight: 1
-      - path: trou1
-        weight: 1
-      - path: trou2
-        weight: 1
-      - path: trou3
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []

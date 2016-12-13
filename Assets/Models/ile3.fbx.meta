@@ -1,0 +1,254 @@
+fileFormatVersion: 2
+guid: 7c33a311bdcaf4d4c85253cb7b138ee1
+timeCreated: 1480448856
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Cube_3
+    100002: Cylindre
+    100004: Cylindre_1
+    100006: //RootNode
+    100008: planche1
+    100010: planche2
+    100012: planche2_1
+    100014: planche2_2
+    100016: planche2_3
+    100018: planche2_4
+    100020: planche2_4_2
+    100022: planche2_5
+    100024: planche2_6
+    100026: planche3
+    100028: planche3_1
+    100030: planche3_2
+    100032: planche3_3
+    100034: planche4
+    100036: planche4_1
+    100038: planche4_2
+    100040: planches
+    100042: smoke1
+    100044: "Sph\xE8re"
+    100046: "Sph\xE8re_2"
+    400000: Cube_3
+    400002: Cylindre
+    400004: Cylindre_1
+    400006: //RootNode
+    400008: planche1
+    400010: planche2
+    400012: planche2_1
+    400014: planche2_2
+    400016: planche2_3
+    400018: planche2_4
+    400020: planche2_4_2
+    400022: planche2_5
+    400024: planche2_6
+    400026: planche3
+    400028: planche3_1
+    400030: planche3_2
+    400032: planche3_3
+    400034: planche4
+    400036: planche4_1
+    400038: planche4_2
+    400040: planches
+    400042: smoke1
+    400044: "Sph\xE8re"
+    400046: "Sph\xE8re_2"
+    2300000: Cube_3
+    2300002: Cylindre
+    2300004: Cylindre_1
+    2300006: planche2
+    2300008: planche2_1
+    2300010: planche2_2
+    2300012: planche2_3
+    2300014: planche2_4_2
+    2300016: planche2_5
+    2300018: planche2_6
+    2300020: planche3
+    2300022: planche3_1
+    2300024: planche3_2
+    2300026: planche3_3
+    2300028: planche4
+    2300030: planche4_1
+    2300032: planche4_2
+    2300034: smoke1
+    2300036: "Sph\xE8re_2"
+    3300000: Cube_3
+    3300002: Cylindre
+    3300004: Cylindre_1
+    3300006: planche2
+    3300008: planche2_1
+    3300010: planche2_2
+    3300012: planche2_3
+    3300014: planche2_4_2
+    3300016: planche2_5
+    3300018: planche2_6
+    3300020: planche3
+    3300022: planche3_1
+    3300024: planche3_2
+    3300026: planche3_3
+    3300028: planche4
+    3300030: planche4_1
+    3300032: planche4_2
+    3300034: smoke1
+    3300036: "Sph\xE8re_2"
+    4300000: planche4_2
+    4300002: planche2_6
+    4300004: planche2_5
+    4300006: planche2_4_2
+    4300008: planche2_3
+    4300010: planche3_3
+    4300012: planche2_2
+    4300014: planche3_2
+    4300016: planche2_1
+    4300018: planche3_1
+    4300020: planche4_1
+    4300022: Cube_3
+    4300024: Cylindre_1
+    4300026: planche2
+    4300028: planche3
+    4300030: planche4
+    4300032: Cylindre
+    4300034: "Sph\xE8re_2"
+    4300036: smoke1
+    7400000: smokemachine
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: smokemachine
+      takeName: Principal
+      firstFrame: 0
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cylindre
+        weight: 1
+      - path: planches
+        weight: 1
+      - path: planches/planche1
+        weight: 1
+      - path: planches/planche1/Cube_3
+        weight: 1
+      - path: planches/planche1/Cylindre_1
+        weight: 1
+      - path: planches/planche2
+        weight: 1
+      - path: planches/planche2_1
+        weight: 1
+      - path: planches/planche2_2
+        weight: 1
+      - path: planches/planche2_3
+        weight: 1
+      - path: planches/planche2_4
+        weight: 1
+      - path: planches/planche2_4/planche2_4_2
+        weight: 1
+      - path: planches/planche2_5
+        weight: 1
+      - path: planches/planche2_6
+        weight: 1
+      - path: planches/planche3
+        weight: 1
+      - path: planches/planche3_1
+        weight: 1
+      - path: planches/planche3_2
+        weight: 1
+      - path: planches/planche3_3
+        weight: 1
+      - path: planches/planche4
+        weight: 1
+      - path: planches/planche4_1
+        weight: 1
+      - path: planches/planche4_2
+        weight: 1
+      - path: smoke1
+        weight: 1
+      - path: "Sph\xE8re"
+        weight: 1
+      - path: "Sph\xE8re/Sph\xE8re_2"
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

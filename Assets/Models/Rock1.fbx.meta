@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 89840f4553058462398f198b4cb340b8
-timeCreated: 1480076403
+guid: a4c1f3334481c49c7976396be224f037
+timeCreated: 1480449455
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -13,7 +13,7 @@ ModelImporter:
     3300000: rock4_2
     4300000: rock4_2
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
@@ -37,7 +37,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 3
+    meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0

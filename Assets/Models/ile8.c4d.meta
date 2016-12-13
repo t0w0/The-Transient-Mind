@@ -1,0 +1,175 @@
+fileFormatVersion: 2
+guid: 152839bbbd5044d289c9d9d6a8bac78d
+timeCreated: 1480503908
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: block
+    100002: Capsule
+    100004: Capsule_2
+    100006: contourmoulin
+    100008: Cube
+    100010: fondation
+    100012: Ground
+    100014: //RootNode
+    100016: Moulin
+    100018: Neutre
+    100020: Nuage1
+    100022: Nuage2
+    100024: Nuage3
+    100026: poignet
+    100028: rayon1
+    100030: rayon2
+    100032: rayon2_2
+    100034: Rock
+    100036: rotor
+    100038: Roue
+    100040: trou1
+    100042: trou2
+    100044: trou3
+    100046: TUBE
+    400000: block
+    400002: Capsule
+    400004: Capsule_2
+    400006: contourmoulin
+    400008: Cube
+    400010: fondation
+    400012: Ground
+    400014: //RootNode
+    400016: Moulin
+    400018: Neutre
+    400020: Nuage1
+    400022: Nuage2
+    400024: Nuage3
+    400026: poignet
+    400028: rayon1
+    400030: rayon2
+    400032: rayon2_2
+    400034: Rock
+    400036: rotor
+    400038: Roue
+    400040: trou1
+    400042: trou2
+    400044: trou3
+    400046: TUBE
+    2300000: block
+    2300002: Capsule_2
+    2300004: contourmoulin
+    2300006: Cube
+    2300008: fondation
+    2300010: Ground
+    2300012: Nuage1
+    2300014: Nuage2
+    2300016: Nuage3
+    2300018: poignet
+    2300020: rayon1
+    2300022: rayon2
+    2300024: rayon2_2
+    2300026: Rock
+    2300028: rotor
+    2300030: trou1
+    2300032: trou2
+    2300034: trou3
+    3300000: block
+    3300002: Capsule_2
+    3300004: contourmoulin
+    3300006: Cube
+    3300008: fondation
+    3300010: Ground
+    3300012: Nuage1
+    3300014: Nuage2
+    3300016: Nuage3
+    3300018: poignet
+    3300020: rayon1
+    3300022: rayon2
+    3300024: rayon2_2
+    3300026: Rock
+    3300028: rotor
+    3300030: trou1
+    3300032: trou2
+    3300034: trou3
+    4300000: Cube
+    4300002: Nuage3
+    4300004: Nuage2
+    4300006: Nuage1
+    4300008: rotor
+    4300010: rayon1
+    4300012: block
+    4300014: contourmoulin
+    4300016: rayon2
+    4300018: rayon2_2
+    4300020: poignet
+    4300022: fondation
+    4300024: trou1
+    4300026: trou2
+    4300028: trou3
+    4300030: Ground
+    4300032: Rock
+    4300034: Capsule_2
+    7400000: C4D Animation Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
