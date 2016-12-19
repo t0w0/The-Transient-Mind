@@ -22,7 +22,7 @@ public class cloudsGenerator : MonoBehaviour {
 		generatedObjects = new GameObject [maxObjects];
 
 		for (int i = 0; i < maxObjects; i++) {
-			Vector3 position = new Vector3 (Random.Range(floorRenderer.bounds.min.x, floorRenderer.bounds.max.x), Random.Range(0,maxHeight), Random.Range(floorRenderer.bounds.min.z, floorRenderer.bounds.max.z));
+			Vector3 position = new Vector3 (Random.Range(floorRenderer.bounds.min.x, floorRenderer.bounds.max.x), Random.Range(floorRenderer.transform.position.y + minHeight, floorRenderer.transform.position.y + maxHeight), Random.Range(floorRenderer.bounds.min.z, floorRenderer.bounds.max.z));
 			generatedObjects[i] = GameObject.Instantiate (prefabs [Random.Range (0, prefabs.Length)], position, Quaternion.identity, transform) as GameObject;
 
 			float scaler = Random.Range (0, scaleModifier);

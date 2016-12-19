@@ -12,10 +12,10 @@ using System.Collections;
 public class Targetting: MonoBehaviour 
 {
 	private Transform myTransform;
-	private GameObject lastTargettedObject;
+	public GameObject lastTargettedObject;
 	public GameObject targettedObject;	// Objet visé, null si aucun objet visé
 
-	private int RAYCASTLENGTH = 10;	// Longueur du rayon issu de la caméra
+	private int RAYCASTLENGTH = 100;	// Longueur du rayon issu de la caméra
 
 	private CursorMode cursorMode = CursorMode.Auto;
 	private Vector2 hotSpot = new Vector2(16, 16);	// Offset du centre du curseur
@@ -26,7 +26,8 @@ public class Targetting: MonoBehaviour
 
 	public int chargingDist = 10;
 	public int chargingCounter = 0;
-	public float transitionTime = 0.025f;
+	public float transitionTime = 0.2f;
+	public float chargingTime = 0.05f;
 
 	void Start () 
 	{	
@@ -64,17 +65,16 @@ public class Targetting: MonoBehaviour
 
 				Debug.Log ("Object targetted");
 
-				if (Input.GetKeyDown (KeyCode.Space)) {
-
-					accepted = true;
-
-				}
-
-
 			} 
 			else {
 				Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 			}
+			if (selected && Input.GetKeyDown (KeyCode.Space)) {
+
+				accepted = true;
+			}
+
+
 		}
 		else  // L'utilisateur bouge la souris sans cliquer 
 		{
@@ -87,30 +87,38 @@ public class Targetting: MonoBehaviour
 				Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 			}
 			selected = false;
-			targettedObject = null;
-			chargingCounter = 0;
+			//targettedObject = null;
+			//chargingCounter = 0;
 		}
 
-		/*if (targettedObject.GetComponent<AgentsParameters> ().isMoving) {
-			GetComponent<Transform> ().position = targettedObject.GetComponent<AgentsParameters> ().anchor.position;
-		}*/
+		if (lastTargettedObject) {
+			if (lastTargettedObject.GetComponent<AgentsParameters> ().isMoving && chargingCounter == 0) {
+				myTransform.position = targettedObject.GetComponent<AgentsParameters> ().anchor.position;
+			}
+		}
 	}
 
 	void LateUpdate () {
 		
 		if (selected) {
-			
 			ChargingTransition ();
 		}
 		else if (accepted) {
-		
 			AcceptedTransition ();
-		
 		} 
 		else {
+			if (transform.position != lastTargettedObject.GetComponent<AgentsParameters> ().anchor.position) {
+				myTransform.position = Vector3.Lerp (transform.position, lastTargettedObject.GetComponent<AgentsParameters> ().anchor.position, chargingTime);
 
-			myTransform.position = Vector3.Lerp (transform.position, lastTargettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
+				AgentsParameters parameters = lastTargettedObject.GetComponent<AgentsParameters> ();
 
+				GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, chargingTime);
+				GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, chargingTime);
+				GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, chargingTime);
+				GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, chargingTime);
+
+				chargingCounter = 0;
+			}
 		}
 	}
 
@@ -118,15 +126,36 @@ public class Targetting: MonoBehaviour
 
 		if (chargingCounter >= chargingDist)
 			return;
-		myTransform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
+		myTransform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, chargingTime);
+
+		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
+
+		GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, chargingTime);
+		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, chargingTime);
+		GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, chargingTime);
+		GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, chargingTime);
+
 		chargingCounter ++;
 
 	}
 
 	public void AcceptedTransition () {
 
+		myTransform.position = Vector3.Lerp (myTransform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
 
+		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
+		GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, transitionTime);
+		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, transitionTime);
+		GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, transitionTime);
+		GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, transitionTime);
+
+		if (myTransform.position == targettedObject.GetComponent<AgentsParameters> ().anchor.position) {
+			chargingCounter = 0;
+			accepted = false;
+			selected = false;
+			lastTargettedObject = targettedObject;
+		}
 	}
 
 	public void Transition (GameObject target) {
