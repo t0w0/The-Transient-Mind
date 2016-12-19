@@ -3,19 +3,21 @@ using System.Collections;
 
 public class MenuManager : MonoBehaviour {
 
+	private Transform myTransform;
 	private GameObject camera;
 	public GameObject titleCan;
 	public Animator titleAnimator;
 
 	public GameObject startAgent;
 
-	public float transitionTime = 0.025f;
+	public float transitionTime = 1f;
 	public bool start = false;
 
 	// Use this for initialization
 	void Start () {
 
 		camera = Camera.main.gameObject;
+		myTransform = camera.transform.parent.parent;
 		titleAnimator = titleCan.GetComponent<Animator> ();
 	}
 	
@@ -34,12 +36,14 @@ public class MenuManager : MonoBehaviour {
 		
 		}
 
-		if (titleAnimator.GetBool ("SpacePress")) {
-			camera.GetComponent<Animation> ().Stop ();
-			camera.transform.position = Vector3.Lerp (camera.transform.position, startAgent.transform.position, transitionTime);
+		if (titleAnimator.GetBool ("SpacePress") && !start) {
+			myTransform.GetComponent<Animation> ().Stop ();
+			myTransform.GetComponent<Animation> ().enabled = false;
+			myTransform.position = Vector3.MoveTowards (camera.transform.parent.position, startAgent.transform.position, transitionTime);
+			myTransform.rotation = Quaternion.Euler ( Vector3.MoveTowards (camera.transform.parent.rotation.eulerAngles, startAgent.transform.rotation.eulerAngles, transitionTime));
 
 			if (camera.transform.position == startAgent.transform.position) {
-				camera.transform.parent.GetComponent<Targetting> ().enabled = true;
+				//myTransform.GetComponent<Targetting> ().enabled = true;
 				start = true;
 			}
 		}
