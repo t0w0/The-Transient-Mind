@@ -3,52 +3,45 @@ using System.Collections;
 
 public class MenuManager : MonoBehaviour {
 
+	private GameObject camera;
 	public GameObject titleCan;
-	public GameObject introCamera;
-	public GameObject playerCamera;
+	public Animator titleAnimator;
+
+	public GameObject startAgent;
+
 	public float transitionTime = 0.025f;
-	public bool title = false;
-	public bool transitingToBegin = false;
 	public bool start = false;
 
 	// Use this for initialization
 	void Start () {
-		playerCamera.transform.gameObject.SetActive (false);
+
+		camera = Camera.main.gameObject;
+		titleAnimator = titleCan.GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Space) && !start) {
 
-			if (!title) {
-				title = true;
-				titleCan.GetComponent<Animation> ().Play ();
-			} 
-			else if (!transitingToBegin && title) {
-				introCamera.GetComponent<Animation> ().Stop ();
-				transitingToBegin = true;
+		if (Input.anyKeyDown) {
+		
+			titleAnimator.GetComponent<Animator> ().SetBool ("KeyPress", true);
+		
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space) && titleAnimator.GetBool ("KeyPress")) {
+		
+			titleAnimator.GetComponent<Animator> ().SetBool ("SpacePress", true);
+		
+		}
+
+		if (titleAnimator.GetBool ("SpacePress")) {
+			camera.GetComponent<Animation> ().Stop ();
+			camera.transform.position = Vector3.Lerp (camera.transform.position, startAgent.transform.position, transitionTime);
+
+			if (camera.transform.position == startAgent.transform.position) {
+				camera.transform.parent.GetComponent<Targetting> ().enabled = true;
+				start = true;
 			}
 		}
-		if (transitingToBegin) {
-		
-			TransitionToBeginning ();
-
-		}
-
-
-	}
-
-	public void TransitionToBeginning () {
-	
-		introCamera.transform.position = Vector3.Lerp (introCamera.transform.position, playerCamera.transform.position, transitionTime);
-		titleCan.GetComponent<CanvasGroup>().alpha = Mathf.Lerp (titleCan.GetComponent<CanvasGroup>().alpha, 0, transitionTime);
-		if (introCamera.transform.position == playerCamera.transform.position) {
-			playerCamera.transform.parent.GetComponent<Targetting> ().enabled = true;
-			playerCamera.transform.gameObject.SetActive (true);
-			introCamera.transform.gameObject.SetActive (false);
-			transitingToBegin = false;
-			start = true;
-		}
-	
 	}
 }
