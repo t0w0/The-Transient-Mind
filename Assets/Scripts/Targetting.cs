@@ -11,33 +11,29 @@ using System.Collections;
 **/
 public class Targetting: MonoBehaviour 
 {
-
-	public GameObject beginTarget;
-	private GameObject lastTargettedObject;
-
+	private Transform myTransform;
+	public GameObject lastTargettedObject;
 	public GameObject targettedObject;	// Objet visé, null si aucun objet visé
 
-	private int RAYCASTLENGTH = 10;	// Longueur du rayon issu de la caméra
+	private int RAYCASTLENGTH = 100;	// Longueur du rayon issu de la caméra
 
 	private CursorMode cursorMode = CursorMode.Auto;
 	private Vector2 hotSpot = new Vector2(16, 16);	// Offset du centre du curseur
 	public Texture2D cursorOff, cursorSelected, cursorHover;	// Textures à appliquer aux curseurs
 
-	public float timePress = 0;
+	public bool selected = false;
+	public bool accepted = false;
 
-	public float transitionTimeValidating = 0.01f;
-	public float timeToValidateTransit = 0.5f;
-	public bool transitionValidate = false;
-
+	public int chargingDist = 10;
+	public int chargingCounter = 0;
 	public float transitionTime = 0.2f;
-	private bool transiting = false;
+	public float chargingTime = 0.05f;
 
 	void Start () 
 	{	
-		lastTargettedObject = beginTarget.gameObject;
-		targettedObject = beginTarget.gameObject;
-
-		Transition (targettedObject);
+		myTransform = transform.parent.parent;
+		lastTargettedObject = transform.GetComponent<MenuManager>().startAgent;
+		targettedObject = transform.GetComponent<MenuManager>().startAgent;
 
 		Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 		Cursor.visible = true;
@@ -48,6 +44,7 @@ public class Targetting: MonoBehaviour
 		// Le raycast attache un objet séléctionné
 		RaycastHit hitInfo;
 		Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+		//Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(transform.forward);
 		Debug.DrawRay (ray.origin, ray.direction * RAYCASTLENGTH, Color.blue);
 		bool rayCasted = Physics.Raycast (ray, out hitInfo, RAYCASTLENGTH);
 
@@ -61,31 +58,24 @@ public class Targetting: MonoBehaviour
 
 			if (rayCasted) {
 				Cursor.SetCursor (cursorHover, hotSpot, cursorMode);
-				timePress = timePress +  Time.deltaTime;
 
-				Transition (hitInfo.transform.parent.gameObject);
+				selected = true;
 
-				if (timePress < timeToValidateTransit) {
-					transitionValidate = false;
-				}
-				else if (timePress > timeToValidateTransit) {
-					transitionValidate = true;
-				}
-
+				targettedObject = hitInfo.transform.parent.gameObject;
 
 				Debug.Log ("Object targetted");
-			} else {
+
+			} 
+			else {
 				Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
-				timePress = 0;
 			}
-		} 
+			if (selected && Input.GetKeyDown (KeyCode.Space)) {
 
-		else if (Input.GetMouseButtonUp (0)) {
-			timePress = 0;
-			transiting = false;
-			transitionValidate = false;
+				accepted = true;
+			}
+
+
 		}
-
 		else  // L'utilisateur bouge la souris sans cliquer 
 		{
 			if (rayCasted) 
@@ -96,86 +86,75 @@ public class Targetting: MonoBehaviour
 			{
 				Cursor.SetCursor (cursorOff, hotSpot, cursorMode);
 			}
+			selected = false;
+			//targettedObject = null;
+			//chargingCounter = 0;
 		}
 
-		if (targettedObject.GetComponent<AgentsParameters> ().isMoving && !transiting) {
-			GetComponent<Transform> ().position = targettedObject.GetComponent<AgentsParameters> ().anchor.position;
+		if (lastTargettedObject) {
+			if (lastTargettedObject.GetComponent<AgentsParameters> ().isMoving && chargingCounter == 0) {
+				myTransform.position = targettedObject.GetComponent<AgentsParameters> ().anchor.position;
+			}
 		}
 	}
 
 	void LateUpdate () {
 		
-		if (transiting) {
-			TransitionAnimation ();
-			if (transitionValidate) {
-				//TransitionAnimation ();
-			} else {
-				//TransitionValidationAnimation ();
+		if (selected) {
+			ChargingTransition ();
+		}
+		else if (accepted) {
+			AcceptedTransition ();
+		} 
+		else {
+			if (transform.position != lastTargettedObject.GetComponent<AgentsParameters> ().anchor.position) {
+				myTransform.position = Vector3.Lerp (transform.position, lastTargettedObject.GetComponent<AgentsParameters> ().anchor.position, chargingTime);
+
+				AgentsParameters parameters = lastTargettedObject.GetComponent<AgentsParameters> ();
+
+				GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, chargingTime);
+				GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, chargingTime);
+				GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, chargingTime);
+				GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, chargingTime);
+
+				chargingCounter = 0;
 			}
 		}
 	}
 
-	void Transition (GameObject target) {
+	public void ChargingTransition () {
 
-		lastTargettedObject = targettedObject;
-		targettedObject = target;
+		if (chargingCounter >= chargingDist)
+			return;
+		myTransform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, chargingTime);
 
-		lastTargettedObject.GetComponentInChildren<Renderer> ().enabled = true;
-		lastTargettedObject.GetComponentInChildren<Collider> ().isTrigger = false;
-		lastTargettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
-
-		transiting = true;
-
-		targettedObject.GetComponentInChildren<Renderer> ().enabled = false;
-		targettedObject.GetComponentInChildren<Rigidbody> ().isKinematic = true;
-		targettedObject.GetComponentInChildren<Collider> ().isTrigger = true;
-	
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
 
-		GetComponent<Rigidbody> ().useGravity = parameters.isFlying ? false : true ;
-		GetComponent<Rigidbody> ().constraints = parameters.isMoving ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
+		GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, chargingTime);
+		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, chargingTime);
+		GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, chargingTime);
+		GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, chargingTime);
+
+		chargingCounter ++;
 
 	}
 
-	/*void TransitionValidationAnimation () {
-		Debug.Log ("TransitionValidation");
+	public void AcceptedTransition () {
+
+		myTransform.position = Vector3.Lerp (myTransform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
 
 		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
-
-		RAYCASTLENGTH = parameters.interactionRange;
-		//		RenderSettings.fogDensity = Mathf.Lerp (RenderSettings.fogDensity, parameters.visionRange, transitionTime);
-		GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, transitionTimeValidating);
-		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, transitionTimeValidating);
-		GetComponentInChildren<MotionBlur> ().blurAmount = Mathf.Lerp (GetComponentInChildren<MotionBlur> ().blurAmount, parameters.motionBlurStrength, transitionTimeValidating);
-		GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, transitionTimeValidating);
-		GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, transitionTimeValidating);
-
-		transform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTimeValidating);
-		//		transform.rotation.SetEulerAngles (Vector3.Lerp (transform.rotation.eulerAngles, targettedObject.GetComponent<AgentsParameters> ().anchor.rotation.eulerAngles, transitionTime));
-
-		if (GetComponent<Transform> ().position == targettedObject.transform.position) {
-			transiting = false;
-			transitionValidate = false;
-		}
-	}*/
-
-	void TransitionAnimation () {
-		Debug.Log ("Transition");
-
-		AgentsParameters parameters = targettedObject.GetComponent<AgentsParameters> ();
-
-		RAYCASTLENGTH = parameters.interactionRange;
 
 		GetComponentInChildren<Camera> ().fieldOfView = Mathf.Lerp (GetComponentInChildren<Camera> ().fieldOfView, parameters.fov, transitionTime);
 		GetComponentInChildren<ColorCorrectionCurves> ().saturation = Mathf.Lerp (GetComponentInChildren<ColorCorrectionCurves> ().saturation, parameters.saturation, transitionTime);
-		GetComponentInChildren<MotionBlur> ().blurAmount = Mathf.Lerp (GetComponentInChildren<MotionBlur> ().blurAmount, parameters.motionBlurStrength, transitionTime);
 		GetComponentInChildren<BlurOptimized> ().blurSize = Mathf.Lerp (GetComponentInChildren<BlurOptimized> ().blurSize, parameters.blurSize, transitionTime);
 		GetComponentInChildren<DepthOfField> ().focalSize = Mathf.Lerp (GetComponentInChildren<DepthOfField> ().focalSize, parameters.focalSize, transitionTime);
 
-		transform.position = Vector3.Lerp (transform.position, targettedObject.GetComponent<AgentsParameters> ().anchor.position, transitionTime);
-
-		if (GetComponent<Transform> ().position == targettedObject.transform.position) {
-			transiting = false;
+		if (myTransform.position == targettedObject.GetComponent<AgentsParameters> ().anchor.position) {
+			chargingCounter = 0;
+			accepted = false;
+			selected = false;
+			lastTargettedObject = targettedObject;
 		}
 	}
 }

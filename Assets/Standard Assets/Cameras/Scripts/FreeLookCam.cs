@@ -18,8 +18,7 @@ namespace UnityStandardAssets.Cameras
         [SerializeField] private float m_TurnSmoothing = 0.0f;                // How much smoothing to apply to the turn input, to reduce mouse-turn jerkiness
         [SerializeField] private float m_TiltMax = 75f;                       // The maximum value of the x axis rotation of the pivot.
         [SerializeField] private float m_TiltMin = 45f;                       // The minimum value of the x axis rotation of the pivot.
-		[SerializeField] private float m_LookMax = 75f;                       // The maximum value of the x axis rotation of the pivot.
-		[SerializeField] private float m_LookMin = 45f;                       // The minimum value of the x axis rotation of the pivot.
+		[SerializeField] private float m_Look = 0f;                       // The maximum value of the x axis rotation of the pivot.
         [SerializeField] private bool m_LockCursor = false;                   // Whether the cursor should be hidden and locked.
         [SerializeField] private bool m_VerticalAutoReturn = false;           // set wether or not the vertical axis should auto return
 		
@@ -82,7 +81,10 @@ namespace UnityStandardAssets.Cameras
 
             // Adjust the look angle by an amount proportional to the turn speed and horizontal input.
             m_LookAngle += x*m_TurnSpeed;
-			m_LookAngle = Mathf.Clamp (m_LookAngle, -m_LookMin, m_LookMax);
+			if (m_Look != 0) {
+				m_LookAngle = Mathf.Clamp (m_LookAngle, -m_Look, m_Look);
+			}
+
 
             // Rotate the rig (the root object) around Y axis only:
 			m_TransformTargetRot = Quaternion.Euler(0f, m_LookAngle, 0f);
@@ -97,7 +99,7 @@ namespace UnityStandardAssets.Cameras
             else
             {
                 // on platforms with a mouse, we adjust the current angle based on Y mouse input and turn speed
-                m_TiltAngle += y*m_TurnSpeed;
+                m_TiltAngle -= y*m_TurnSpeed;
                 // and make sure the new value is within the tilt range
                 m_TiltAngle = Mathf.Clamp(m_TiltAngle, -m_TiltMin, m_TiltMax);
             }
