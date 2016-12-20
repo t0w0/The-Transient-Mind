@@ -3,52 +3,49 @@ using System.Collections;
 
 public class MenuManager : MonoBehaviour {
 
+	private Transform myTransform;
+	private GameObject camera;
 	public GameObject titleCan;
-	public GameObject introCamera;
-	public GameObject playerCamera;
-	public float transitionTime = 0.025f;
-	public bool title = false;
-	public bool transitingToBegin = false;
+	public Animator titleAnimator;
+
+	public GameObject startAgent;
+
+	public float transitionTime = 1f;
 	public bool start = false;
 
 	// Use this for initialization
 	void Start () {
-		playerCamera.transform.gameObject.SetActive (false);
+
+		camera = Camera.main.gameObject;
+		myTransform = camera.transform.parent.parent;
+		titleAnimator = titleCan.GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Space) && !start) {
 
-			if (!title) {
-				title = true;
-				titleCan.GetComponent<Animation> ().Play ();
-			} 
-			else if (!transitingToBegin && title) {
-				introCamera.GetComponent<Animation> ().Stop ();
-				transitingToBegin = true;
+		if (Input.anyKeyDown) {
+		
+			titleAnimator.GetComponent<Animator> ().SetBool ("KeyPress", true);
+		
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space) && titleAnimator.GetBool ("KeyPress")) {
+		
+			titleAnimator.GetComponent<Animator> ().SetBool ("SpacePress", true);
+		
+		}
+
+		if (titleAnimator.GetBool ("SpacePress") && !start) {
+			myTransform.GetComponent<Animation> ().Stop ();
+			myTransform.GetComponent<Animation> ().enabled = false;
+			myTransform.position = Vector3.MoveTowards (camera.transform.parent.position, startAgent.transform.position, transitionTime);
+			myTransform.rotation = Quaternion.Euler ( Vector3.MoveTowards (camera.transform.parent.rotation.eulerAngles, startAgent.transform.rotation.eulerAngles, transitionTime));
+
+			if (camera.transform.position == startAgent.transform.position) {
+				//myTransform.GetComponent<Targetting> ().enabled = true;
+				start = true;
 			}
 		}
-		if (transitingToBegin) {
-		
-			TransitionToBeginning ();
-
-		}
-
-
-	}
-
-	public void TransitionToBeginning () {
-	
-		introCamera.transform.position = Vector3.Lerp (introCamera.transform.position, playerCamera.transform.position, transitionTime);
-		titleCan.GetComponent<CanvasGroup>().alpha = Mathf.Lerp (titleCan.GetComponent<CanvasGroup>().alpha, 0, transitionTime);
-		if (introCamera.transform.position == playerCamera.transform.position) {
-			playerCamera.transform.parent.GetComponent<Targetting> ().enabled = true;
-			playerCamera.transform.gameObject.SetActive (true);
-			introCamera.transform.gameObject.SetActive (false);
-			transitingToBegin = false;
-			start = true;
-		}
-	
 	}
 }

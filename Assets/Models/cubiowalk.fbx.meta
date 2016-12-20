@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 2a312d97161c2465cb8ba64b0959b9dc
-timeCreated: 1481634162
+guid: 56363ad902df84c42ab96a3f3e652938
+timeCreated: 1481649902
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -37,7 +37,7 @@ ModelImporter:
     4300006: Cube_1
     4300008: Cube
     4300010: Cube_8
-    7400000: walking cubio
+    7400000: cubiowalking
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -61,7 +61,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: walking cubio
+      name: cubiowalking
       takeName: C4D Animation Take
       firstFrame: 0
       lastFrame: 43
